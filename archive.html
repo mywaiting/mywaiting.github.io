@@ -1,6 +1,6 @@
 ---
 layout: page
-permalink: /archive
+permalink: /archive/
 title: 博客存档
 description: mywaiting 博客存档
 ---
@@ -12,7 +12,7 @@ description: mywaiting 博客存档
 			<div class="tags">
 				<h1>TAGS</h1>
 				{% for tag in site.tags %}
-				<a class="tag" href="{{ site.baseurl }}/archive#tag={{ tag[0] | url_encode }}" title="tag {{ tag[0] }}">#{{ tag[0] }}<sup>{{ tag[1].size }}</sup></a>
+				<a class="tag" href="{{ site.baseurl }}/archive/#tag={{ tag[0] | url_encode }}" title="tag {{ tag[0] }}">#{{ tag[0] }}<sup>{{ tag[1].size }}</sup></a>
 				{% endfor %}
 			</div>
 			<div class="articles">

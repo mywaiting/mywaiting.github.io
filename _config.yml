@@ -9,7 +9,7 @@ url: 'https://www.mywaiting.com/'
 
 
 # build
-permalink: '/:categories/:title'
+permalink: '/:categories/:title/'  # compact for previous Hugo Blog
 exclude: [
     'node_modules',
     'package.json',

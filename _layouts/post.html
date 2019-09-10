@@ -11,7 +11,7 @@ layout: default
 					<time class="article-time" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%b %d, %Y" }}</time> 
 					<div class="article-tags" itemprop="tags">
 						{% for tag in page.tags %}
-						<a class="tag" href="{{ site.baseurl }}/archive#tag={{ tag | url_encode }}" title="{{ tag }}">#{{ tag }}</a>
+						<a class="tag" href="{{ site.baseurl }}/archive/#tag={{ tag | url_encode }}" title="{{ tag }}">#{{ tag }}</a>
 						{% endfor %}
 					</div>
 				</div>
