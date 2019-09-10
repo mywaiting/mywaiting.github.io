@@ -1,0 +1,33 @@
+---
+layout: default
+permalink: /404.html
+title: HTTP 404, page not found
+---
+
+<div class="site page404">
+	<div class="container">
+		<div id="main">
+			<article class="article error404">
+				<h1 class="article-title">HTTP 404, Page Not Found</h1>
+				<h2 class="article-subtitle">找不到你所请求的页面！</h2>
+				<div class="article-body markdown">
+					<p>对不起，找不到你请求的页面，请检查你请求的文件路径是否正确。</p>
+
+					<p>如果你是通过搜索引擎到达此页面，可能是因为博客迁移造成的链接无法识别，请根据搜索标题，进入我们的 <a href="/archive">历史存档</a> 页面肉眼搜索一下。造成不便，还请谅解。</p>
+					<p>如果有问题，请 <a href="/about#contact">联系我们</a>。以下的最近博客文章列表，或许会有你需要的内容。</p>
+				</div>
+			</article>
+			<div class="articles">
+				<h1>RECENT</h1>
+				{% for post in site.posts limit:10 %}
+				<article class="article">
+					<h2 class="article-title"><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></h2>
+					<div class="article-meta">
+						<time class="article-time" datetime="{{ post.date | date_to_xmlschema }}" itemprop="datePublished">{{ post.date | date: "%b %d, %Y" }}</time> 
+					</div>
+				</article>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,44 @@
+# jekyll config
+
+# site
+title: 'mywaiting'
+slogen: 'true love waits, always'
+description: '这是 mywaiting 的个人网络小站，没有什么很特别的东西，就是个网络小站'
+keywords: '有关 mywaiting 的一切'
+url: 'https://www.mywaiting.com/'
+
+
+# build
+permalink: '/:categories/:title'
+exclude: [
+    'node_modules',
+    'package.json',
+    'Gruntfile.js',
+    'README.md'
+]
+
+
+# googleanalytics
+google_analytics:
+    id: 'UA-36924646-1'
+    domain: 'www.mywaiting.com'
+
+
+# disqus
+disqus:
+    shortname: 'mywaiting'
+
+
+# links
+links: [
+    {
+        title: 'DSQLite',
+        url: 'https://dsqlite.com/?utm_source=mywaiting'
+    }, {
+        title: 'LSA',
+        url: 'https://www.listalternative.com/?utm_source=mywaiting'
+    }, {
+        title: 'SDN',
+        url: 'https://www.securitydailynews.com/?utm_source=mywaiting'
+    }
+]

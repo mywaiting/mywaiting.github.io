@@ -1,0 +1,33 @@
+---
+layout: home
+title: Hello, mywaiting
+description: 欢迎来到 mywaiting 的个人博客
+---
+
+
+<div class="site index">
+	<div class="container">
+		<div id="main">
+			<div class="intro">
+				<h1>{{ page.title }}</h1>
+				<div class="markdown">
+					<p>思绪来得快，走得也快，只是偶尔在这里停留</p>
+					<p>在所有过去与将来，所有值得怀念与值得期待的景色里，我最喜欢你</p>
+					<p>愿我如星君如月，夜夜流光相皎洁</p>
+				</div>
+			</div>
+			<div class="articles">
+				<h1>RECENT</h1>
+				{% for post in site.posts limit:5 %}
+				<article class="article">
+				<h2 class="article-title"><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></h2>
+				<div class="article-meta">
+					<time class="article-time" datetime="{{ post.date | date_to_xmlschema }}" itemprop="datePublished">{{ post.date | date: "%b %d, %Y" }}</time> 
+				</div>
+			</article>
+				{% endfor %}
+			</div>
+		</div>
+		<aside id="side"></aside>
+	</div>
+</div>

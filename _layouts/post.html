@@ -1,0 +1,32 @@
+---
+layout: default
+---
+
+<div class="site post">
+	<div class="container">
+		<div id="main">
+			<article class="article" itemscope itemtype="http://schema.org/BlogPosting">
+				<h1 class="article-title" itemprop="name headline">{{ page.title }}</h1>
+				<div class="article-meta">
+					<time class="article-time" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%b %d, %Y" }}</time> 
+					<div class="article-tags" itemprop="tags">
+						{% for tag in page.tags %}
+						<a class="tag" href="{{ site.baseurl }}/archive#tag={{ tag | url_encode }}" title="{{ tag }}">#{{ tag }}</a>
+						{% endfor %}
+					</div>
+				</div>
+				<div class="article-body markdown" itemprop="articleBody">
+					{{ content }}
+				</div>
+			</article>
+			{% if site.disqus %}
+			<div class="comments">
+				<div id="disqus_thread"></div>
+			</div>
+			{% endif %}
+		</div>
+		<aside id="side">
+			<div id="toc"></div>
+		</aside>
+	</div>
+</div>

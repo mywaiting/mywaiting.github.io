@@ -1,0 +1,32 @@
+---
+layout: page
+permalink: /archive
+title: 博客存档
+description: mywaiting 博客存档
+---
+
+
+<div class="site archive">
+	<div class="container">
+		<div id="main">
+			<div class="tags">
+				<h1>TAGS</h1>
+				{% for tag in site.tags %}
+				<a class="tag" href="{{ site.baseurl }}/archive#tag={{ tag[0] | url_encode }}" title="tag {{ tag[0] }}">#{{ tag[0] }}<sup>{{ tag[1].size }}</sup></a>
+				{% endfor %}
+			</div>
+			<div class="articles">
+				<h1>ARCHIVE</h1>
+				{% for post in site.posts%}
+				<article class="article" data-tags="{{ post.tags | join:'|' }}">
+					<h2 class="article-title"><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></h2>
+					<div class="article-meta">
+						<time class="article-time" datetime="{{ post.date | date_to_xmlschema }}" itemprop="datePublished">{{ post.date | date: "%b %d, %Y" }}</time> 
+					</div>
+				</article>
+				{% endfor %}
+			</div>
+		</div>
+		<aside id="side"></aside>
+	</div>
+</div>

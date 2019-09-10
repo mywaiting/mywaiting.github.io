@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html id="mywaiting" lang="zh-CN" class="nojs">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+    <meta name="keywords"  content="{% if page.keywords %}{{ page.keywords }}{% else %}{{ site.keywords }}{% endif %}">
+	<title>{% if page.title %}{{ page.title }} - {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
+	<link rel="shortcut icon" href="{{ '/assets/img/favicon.ico' | prepend: site.baseurl }}">
+    <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
+    <link rel="alternate" type="application/rss+xml" title="{{ site.title }} RSS Feed" href="{{ site.url }}/index.xml">
+    <link rel="stylesheet" href="{{ '/assets/css/screen.css' | prepend: site.baseurl }}">
+</head>
+<body class="page">
+	<div id="root">
+		<div class="app">
+			
+			<header id="header">
+				<div class="container">
+					<h1 id="brand">
+						<a href="{{ site.url }}">{{ site.title }}</a>
+					</h1>
+					<p id="slogen">{{ site.slogen }}</p>
+					<nav id="nav">
+						<ul class="pages">
+							<li><a href="/about">ABOUT</a></li>
+							<li><a href="/archive">ARCHIVE</a></li>
+							<li><a href="/index.xml">FEED</a></li>
+						</ul>
+						<ul class="links">
+							{% for link in site.links %}
+							<li><a href="{{ link.url | prepend: site.baseurl }}" target="_blank">{{ link.title }}</a></li>
+							{% endfor %}
+						</ul>
+					</nav>
+				</div>
+			</header>
+			<div id="container">
+				{{ content }}
+			</div>
+			<footer id="footer">
+				<div class="container">
+					<div class="rights">
+						<span title="&copy; 2009-2019 Mywaiting">&copy; 2009-2019 <a href="//www.mywaiting.com">Mywaiting</a>.</span>
+					</div>
+					<div class="powered">
+						<p>Powered by <a href="//www.mywaiting.com/">Project LifeLogger</a> with <a href="//jekyllrb.com/" target="_blank" rel="noopener norederrer">Jekyll</a>, Drived by <a href="//pages.github.com/" target="_blank" rel="noopener norederrer">Github Pages</a></p>
+					</div>
+				</div>
+			</footer>
+		</div>
+	</div>
+	<script type="text/javascript" id="js-config">
+		{% if site.google_analytics %}var _gaId = '{{ site.google_analytics.id }}';var _gaDomain = '{{ site.google_analytics.domain }}';{% endif %}
+		{% if site.disqus %}var disqus_shortname = '{{ site.disqus.shortname }}';{% endif %}
+	</script>
+	<script src="{{ '/assets/js/application.js' | prepend: site.baseurl }}" id="js-application"></script>
+</body>
+</html>
