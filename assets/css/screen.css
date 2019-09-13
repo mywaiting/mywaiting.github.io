@@ -637,3 +637,90 @@ label {
 .site.page404 .error404 {
 	margin-bottom: 3rem;
 }
+
+
+/* mobile, responsive */
+
+/* Large desktop */
+/*
+@media (min-width: 1200px) {
+
+}
+*/
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+	#toc {
+		display: none;
+		visibility: none;
+	}
+	#container #main {
+		padding-right: 10px;
+	}
+	#container #side {
+		margin-left: 0px;
+		margin-top: 10px;
+	}
+}
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) {
+	.container {
+		padding: 0 10px;
+		margin: 0;
+		width: auto;
+	}
+	.container, .row {
+		min-width: auto;
+	}
+	#header {
+		margin: 30px 0;
+	}
+	#header #brand {
+		text-align: center;
+	}
+	#header #slogen {
+		clear: left;
+		float: left;
+		position: relative;
+		padding-left: 0;
+		padding-top: 20px;
+		top: 0;
+	}
+	#header #nav {
+		position: relative;
+		top: auto;
+		left: auto;
+		width: 100%;
+		float: left;
+		margin-top: 20px;
+	}
+	#header #nav ul {
+		width: 100%;
+		clear: both;
+	}
+	#header #nav ul li {
+		float: left;
+		margin-right: 10px;
+		text-align: left;
+	}
+	#container #main {
+		float: none;
+		width: auto;
+		/*overflow: hidden;*/
+	}
+	#container #side {
+		float: none;
+		width: auto;
+		margin-left: 0;
+	}
+	#toc {
+		display: none;
+		visibility: none;
+	}
+}
+/* Landscape phones and down */
+/*
+@media (max-width: 480px) {
+	
+}
+*/
+
