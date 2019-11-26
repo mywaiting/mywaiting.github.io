@@ -238,6 +238,50 @@ sudo chown -R sammy /var/www/html
 
 
 
+## Nginx 下的 WordPress 静态化
+
+Nginx 下面实现 WordPress 静态化很简单，对比上面的 Nginx 的规则，只需加入下面的规则即可
+
+```
+server {
+
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    
+    # 网站对应的根目录
+    root /var/www/html;
+
+    # 这一行中添加了index.php
+    index index.php index.html index.htm index.nginx-debian.html;
+
+    # 此处修改你的域名，如果没有则不需要修改源文件
+    server_name server_domain_or_IP;
+
+	# 注意：这里的规则跟前面的 Nginx 默认配置的规则不同
+	# 这里已经针对 index.php 进行静态化改写
+    location / {
+        try_files $uri $uri/ /index.php?$args; 
+    }
+
+    # 以下所有内容需要添加，其实就是去掉原来的注释即可
+    location ~ \.php$ {
+    	# 必须在 php.ini 里面配置 "cgi.fix_pathinfo = 0;"
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+    }
+
+    # 防止暴露 Apache .htaccess 文件而特别增加的规则
+    location ~ /\.ht {
+        deny all;
+    }
+
+}
+```
+
+
+
+`try_files $uri $uri/ /index.php?$args;` 已经针对 `wp-admin` 部分需要单独的规则来实现其静态化，因为 `$uri/` 在访问 `/wp-admin` 的时候，会重定向到 `/wp-admin/` 从而关联访问到 `/wp-admin/index.php`
+
 ## WordPress 自身安全加固
 
 ### 隐藏 WordPress 版本信息
