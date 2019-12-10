@@ -327,13 +327,116 @@ add_filter('author_link', 'hidden_author_link');
 
 增加部分 Nginx 规则控制 WordPress 的安全性
 
-### 禁止无关文件的展示
+### 禁止访问 WP 安装接口
+
+WordPress 在 Web 界面安装完成之后，其安装文件是完全多余的，然而，WP 每次更新后都会自动带上这货色，所以最好的方法就是直接在 Nginx 中禁止访问
+
+```
+location ~ ^/wp-admin/install\.php {
+	deny all;
+	log_not_found off;
+	access_log off;
+}
+```
+
+
+
+### 修改登录入口
+
+如果项目有确定的登录地址，那么可以隐藏掉 WordPress 默认的登录入口地址。
+
+WP 的默认登录文件地址必须在 Nginx 里重定向，因为每次更新 WordPress，安装包都会重写这个地址，所以相对来说，直接在 Nginx 中禁用并 rewrite 新的后台登录入口是极其优秀的做法。
+
+```
+# 默认登录入口
+location ~* /wp-login.php$ {
+    allow 127.0.0.1;
+    deny all;
+}
+# 默认注册入口
+location ~* /wp-signup.php$ {
+    allow 127.0.0.1;
+    deny all;
+}
+# 新的登录入口
+location ~* /YOUR-NEW-LOGIN-ADDR$ {
+    
+}
+
+```
+
+### 后台管理限制访问 IP 地址/启用 BASIC AUTH
+
+后台管理文件夹 `/wp-admin/` 其实加上密码限制访问最好的，然而很多第三方实施的项目难以保证再次输入密码，很是尴尬，但是个人或者公司类的项目可以考虑。
+
+```
+location /wp-admin {
+    allow 202.202.202.0/24; # 国内 IP地址段1
+    allow 201.201.201.0/24; # 国内 IP地址段2，以此类推，将所有国内的IP地址加入
+    deny all;
+}
+```
+
+
+
+### 禁止外部访问无关的文件展示
+
+默认安装的 WordPress 其根目录下有很多外部访问无需知道的文件，比如什么 `wp-config.php` 或者 `wp-load.php` 这样的文件，外部访问应该一律禁止
+
+```
+# 用户注册邮件激活账号需要用到，如果没有用户注册，请直接封禁这个文件的访问
+location ~* /wp-activate.php$ {
+    allow 127.0.0.1;
+    deny all;
+}
+location ~* /wp-blog-header.php$ {
+    allow 127.0.0.1;
+    deny all;
+}
+# 调用评论需要用到，如果全站禁止评论，可以直接封禁这个文件的访问
+location ~* /wp-comments-post.php$ {
+    allow 127.0.0.1;
+    deny all;
+}
+location ~* /wp-config.php$ {
+    allow 127.0.0.1;
+    deny all;
+}
+# WP 定时任务，自己在系统 crontab 加入定时任务，该接口允许本机访问即可
+location ~* /wp-cron.php$ {
+    allow 127.0.0.1;
+    allow 123.123.234.234; # 本机外网 IP
+    deny all;
+}
+# 用于生成 OPML 输出，一般人用不到，直接禁止访问即可
+location ~* /wp-links-opml.php$ {
+    allow 127.0.0.1;
+    deny all;
+}
+location ~* /wp-load.php$ {
+    allow 127.0.0.1;
+    deny all;
+}
+# 用邮件来写博客，一般人用不到，直接禁止访问
+location ~* /wp-mail.php$ {
+    allow 127.0.0.1;
+    deny all;
+}
+location ~* /wp-settings.php$ {
+    allow 127.0.0.1;
+    deny all;
+}
+```
+
+
+
+### 禁止其他无关文件的展示
 
 默认安装的 WordPress 其根目录下有很多无关的文件，比如什么 `readme.html` 这对于程序运行不是必要的文件
 
 ```
 location ~* /license.txt$ {
-    allow 172.0.1.1;
+    allow 127.0.0.1;
     deny all;
 }
 location ~* /readme.html$ {
@@ -373,7 +476,7 @@ if ($request_method !~ ^(GET|POST)$ ) {
 
 ### 禁止直接访问PHP文件
 
-在神不知鬼不觉的情况下，黑客可能会将PHP文件上传到你的服务器中，然后通过访问该恶意文件执行某些操作，即可在你的网站上创建后门。所有我们**应该禁止直接访问任何php文件**
+在神不知鬼不觉的情况下，黑客可能会将PHP文件上传到你的服务器中，然后通过访问该恶意文件执行某些操作，即可在你的网站上创建后门，所以在这些目录中我们**应该禁止直接访问任何php文件**，或者任何 PHP 相关的文件
 
 ```
 location ~* /(?:uploads|files|wp-content|wp-includes|akismet)/.*.php$ {
@@ -408,6 +511,16 @@ location ~ /*\.swp {
     access_log off;
     log_not_found off;
 }
+# SQL文件
+location ~ /*\.sql { 
+    deny all; 
+    access_log off;
+    log_not_found off;
+}
+# 防止Web目录中的敏感文件被下载，一句话搞定，不怕死的直接上！
+location ~* \.(rar|zip|gz|tar|tgz|tar.gz|7z|z|bz2|tar.bz2|sql|log|ini|bak|old|conf|idea|DS_Store|swp|svn/entries|git/config)$ {
+	deny all;
+}
 ```
 
 ### 隐藏Nginx和PHP版本
@@ -434,9 +547,10 @@ add_header X-XSS-Protection "1; mode=block";
 
 # 没有启用 HTTPS 的站点不能随意添加
 add_header Strict-Transport-Security "max-age=31536000";
+
 ```
 
-###  限制请求
+### 限制请求
 
 WordPress登录页面`wp-login.php`是暴力攻击的常见端点。**攻击者会尝试通过批量提交用户名和密码组合进行登录尝试，可能无法破解你的密码，但是对服务器资源占用非常大，可能会导致网站无法访问**。
 
@@ -455,6 +569,7 @@ location ~ \wp-login.php$ {
 
 ```
 autoindex off;
+
 ```
 
 ## PHP 内核日常加固
@@ -464,4 +579,3 @@ autoindex off;
 ## MySQL 数据库日常加固
 
 针对 MySQL 数据库日常加固
-
