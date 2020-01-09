@@ -50,4 +50,28 @@
 以上所有的配置可以使用命令 `npm config list` 来重新检查一遍
 
 
+## 项目开发目录准备
+
+### 初始化 npm
+
+初始化 npm 是指为该项目的 nodejs 项目目录生成 `package.json` 参考默认的即可
+
+> **注意**： 使用命令 `npm install --save-dev package` 是将依赖放入到 `package.json` 里面的 `devDependencies`
+
+> **注意**： 使用命令 `npm install --dev package` 是将依赖放入到 `package.json` 里面的 `dependencies`
+
+简单来说，前者用于 Nodejs 的开发环境依赖的包安装，后者是 Nodejs 生产环境依赖的包安装
+
+### 初始化 tsc
+
+初始化 tsc 是指为该项目 TypeScript Compiler 目录生成 `tsconfig.json` 参考默认的即可
+
+
+
+
+
+
+
+
+
 
