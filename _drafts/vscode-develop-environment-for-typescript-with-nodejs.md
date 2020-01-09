@@ -15,12 +15,17 @@
 ```
   // Nodejs 安装目录，安装到其他目录的请自行修改对应
   D:\Nodejs\
-  
 ```
 
 等 Nodejs 的安装进度条跑完即可。随意打开 Windows 的命令提示符，输入 `node -v` 和 `npm -v` 能看到对应的版本号即代表安装成功。
 
 ### 配置 Nodejs 环境变量
+
+首先打开 Windows 环境变量 `PATH` 里面（随意打开 Windows 的命令提示符，执行命令 `echo %PATH%` 即可查看）是否存在 Nodejs 自身安装目录的环境变量，按照上面目录的配置，那么环境变量应该包含有 `D:\Nodejs\` （注意：Windows 环境变量的值是使用分号进行分隔的）
+
+为了方便暴露 Nodejs globa 安装的包，可以单独设置名为 `NODE_PATH` 的环境变量，其值是 `D:\Nodejs\node_global` ，然后在 Windows 环境变量 `PATH` 的末尾加上 `;%NODE_PATH%;` 即可！
+
+### 配置 Nodejs npm 包管理器
 
 首先进入到 Nodejs 安装目录 `D:\Nodejs\` 新建两个文件夹 `node_cache` 和 `node_global` ，前者用于 nodejs 的安装缓存，后者是 nodejs 全局安装下的模块存放文件夹，然后随意打开 Windows 的命令提示符，执行以下命令
 
