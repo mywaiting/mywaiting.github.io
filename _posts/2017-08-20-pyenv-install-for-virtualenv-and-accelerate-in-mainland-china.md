@@ -12,6 +12,8 @@ tags:
     - Weblogs
 ---
 
+> **UPDATE 2020/02/22** 针对文章中的部分细节有更新，尤其是国内 `PYTHON BUILD MIRRORS` 的问题
+
 使用 [Python](https://www.python.org/) 的人时常会精神错乱，因为 Python 的版本太多了，有些 Python Package 还会挑版本，这让开发、维护甚至生产环境出现很多很恼人的问题。于是针对这个问题，一系列的 Python 独立包环境出现了，比如有名的 virtualenv 使用空间换时间的战术，通过复制一份已有的 Python 环境，修改系统，特别是 Linux 系统的 `PATH` 变量使得在该虚拟包环境中的 Python 路径指向自己，这样就可以不受系统的 Python 版本影响。
 
 但是 virtualenv 的出现只是部分地解决 Python 的独立环境问题，并没有完全地解决其独立环境的构建问题。如果我需要在同一个系统里，同时存在 Python2.6 、Python2.7 、Python3.5 的版本环境，甚至是 jython、 pypy 这样的环境，并且可以根据需要来切换需要的 Python 版本，使用 virtualenv 会比较麻烦。
@@ -28,14 +30,18 @@ tags:
 
 [Pyenv](https://github.com/pyenv/pyenv) 的安装异常简单，只需要使用作者提供的一键安装脚本即可
 
-    curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
+    # Github
+    # curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
+    # recommand
+    curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+    # simple
+    curl https://pyenv.run | bash
 
-然后将 Pyenv 的相关初始化实现放入自己的 `~/.bash_profile` 以方便使用
+然后将 Pyenv 的相关初始化实现放入自己的 `~/.bashrc` 以方便使用
 
-    echo 'export PATH="/home/vagrant/.pyenv/bin:$PATH"' >> ~/.bash_profile
-    echo 'eval "$(pyenv init -)"' >> ~/.bash_profile
-    echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bash_profile
-    source ~/.bash_profileifconfig
+    echo 'export PATH="$HOME/.pyenv/bin:$PATH"' >> ~/.bashrc
+    echo 'eval "$(pyenv init -)"'               >> ~/.bashrc
+    echo 'eval "$(pyenv virtualenv-init -)"'    >> ~/.bashrc
 
 世界就是这么简单！
 
@@ -50,14 +56,18 @@ tags:
 
 国内的 Python 镜像有很多，大概罗列如下，自己找自己对应的速度最快的吧
 
-    http://mirrors.sohu.com/python/
+    http://mirrors.sohu.com/python/ (UPDATE 2020/02/22 时常无法访问)
+    # 强烈推荐
+    https://npm.taobao.org/mirrors/python/
+    
 
 顺便提供一键安装的脚本，用于简化这个世界
 
-    $ export v=2.7.6 | wget http://mirrors.sohu.com/python/$v/Python-$v.tar.xz -P ~/.pyenv/cache/; pyenv install $v 
+    $ export v=2.7.6; wget https://npm.taobao.org/mirrors/python/$v/Python-$v.tar.xz -P ~/.pyenv/cache/; pyenv install $v 
 
-解释一下这个意思，就是从 `http://mirrors.sohu.com/python/` 上下载对应版本的 Python，放入到 `~/.pyenv/cache` 目录里面，然后使用 `pyenv install $v` 即可，`$v` 变量代表 Python 的版本，自己需要哪个版本，就把这个改成自己需要的版本号！
+解释一下这个意思，就是从 `https://npm.taobao.org/mirrors/python/` 上下载对应版本的 Python，放入到 `~/.pyenv/cache` 目录里面，然后使用 `pyenv install $v` 即可，`$v` 变量代表 Python 的版本，自己需要哪个版本，就把这个改成自己需要的版本号！
 
+> **注意** `~/.pyenv/cache` 需要自己建立，假如不存在的话 (UPDATE 2020/02/22）
 
 ### pip 安装国内加速
 
@@ -66,8 +76,9 @@ tags:
     http://mirrors.aliyun.com/pypi/simple
     http://pypi.douban.com/simple
     http://pypi.v2ex.com/simple
+    https://pypi.tuna.tsinghua.edu.cn/simple （特别推荐）
 
-根据自己所在位置的速度来选用吧，一般说来，阿里云的速度是比较不错的
+根据自己所在位置的速度来选用吧，一般说来，TUNA 的速度是比较不错的
 
 只使用镜像来加速一个 Python 程序包的安装可以一个命令搞定，比如说安装 [Tornado](https://www.tornadoweb.org) Web 框架
 
@@ -76,11 +87,11 @@ tags:
 但如果为了方便工作，可以配置成默认的 pip 安装镜像，创建或者修改以下文件 `~/.pip/pip.conf` 写入以下文件内容
 
     [global]
-    index-url = http://mirrors.aliyun.com/pypi/simple
+    index-url = https://pypi.tuna.tsinghua.edu.cn/simple
     [install]
-    trusted-host = mirrors.aliyun.com
+    trusted-host = pypi.tuna.tsinghua.edu.cn
 
-这样在使用pip来安装时，会默认调用该镜像。
+这样在使用 pip 来安装时，会默认调用该镜像。
 
 
 以上，就是我使用 pyenv 一些小总结，希望你看到的话，能觉得有用。
